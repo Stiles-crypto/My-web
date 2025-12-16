@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkoolAI</title>
+    <style>
+        /* Load local SF Pro Rounded fonts placed in the same folder as this HTML file */
+        @font-face {
+            font-family: 'SF Pro Rounded';
+            src: url('SF-Pro-Rounded-Regular.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'SF Pro Rounded';
+            src: url('SF-Pro-Rounded-Bold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* Site-wide base */
+        :root { 
+            --brand-gap: 0.25rem;
+            --primary-blue: #1f6feb;
+            --text-dark: #111;
+            --text-light: #666;
+            --bg-light-blue: #eef5fb;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        html, body { 
+            height: 100%; 
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        body {
+            font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: #ffffff;
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* Brand container: small logo left of the title */
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--brand-gap);
+        }
+
+        .brand .logo {
+            width: 28px;
+            height: auto;
+            display: block;
+        }
+
+        h4 {
+            font-family: inherit;
+            color: var(--primary-blue);
+            margin: 0;
+            font-weight: 700;
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        /* Top-right fixed button */
+        .top-btn {
+            background: var(--primary-blue);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .top-btn:focus { 
+            outline: 3px solid rgba(31,111,235,0.15); 
+            outline-offset: 2px; 
+        }
+        .top-btn:hover { 
+            opacity: 0.9; 
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 24px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--text-dark);
+        }
+
+        .hero h1 .highlight {
+            color: var(--primary-blue);
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        /* Headings */
+        h2 {
+            font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0.5rem 0;
+            text-align: center;
+            font-size: clamp(1.75rem, 5vw, 3rem);
+            line-height: 1.2;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        h2.highlight {
+            color: var(--primary-blue);
+        }
+
+        h6 {
+            font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-weight: 400;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-light);
+            margin: 24px auto 0;
+            max-width: 700px;
+            line-height: 1.6;
+            text-align: center;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* Hero CTA - Combined input + button */
+        .hero-cta {
+            position: relative;
+            max-width: 500px;
+            margin: 50px auto 60px;
+        }
+
+        .email-input-combined {
+            padding: 14px 150px 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 1rem;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+
+        .email-input-combined:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .cta-button-combined {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-blue);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+
+        .cta-button-combined:hover {
+            opacity: 0.9;
+        }
+
+        /* Waitlist Section - Standalone section with combined input+button */
+        .waitlist-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        .waitlist-section h2 {
+            margin-bottom: 40px;
+            color: var(--text-dark);
+        }
+
+        .waitlist-cta {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .waitlist-input {
+            padding: 14px 150px 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 1rem;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+
+        .waitlist-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .waitlist-button {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-blue);
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+
+        .waitlist-button:hover {
+            opacity: 0.9;
+        }
+
+        /* Phone Mockup */
+        .phone-mockup {
+            max-width: 390px;
+            margin: 80px auto;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone-container {
+            background: transparent;
+            border-radius: 15px;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 0 0 1px rgba(82, 80, 80, 0.1);
+            width: 130%;
+            max-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        .phone-mockup img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            object-fit: contain;
+        }
+
+        /* Smart Document Analysis Section */
+        .document-analysis-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 24px;
+        }
+
+        .analysis-container {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .analysis-main {
+            display: flex;
+            gap: 60px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .analysis-text {
+            flex: 1;
+        }
+
+        .analysis-text h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin: 0 0 20px 0;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        .analysis-text p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-light);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .upload-box {
+            flex: 1;
+            max-width: 400px;
+            background: #f9fbff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .upload-header {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .upload-area {
+            background: #ffffff;
+            border: 2px dashed #e0e0e0;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: #888;
+            margin-bottom: 16px;
+        }
+
+        .upload-text {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .select-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .select-btn:hover {
+            opacity: 0.9;
+        }
+
+        .file-info {
+            font-size: 14px;
+            color: #777;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .analyse-btn {
+            display: block;
+            width: 100%;
+            background: #eef1f5;
+            color: #555;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: not-allowed;
+        }
+
+        /* Mobile Image for Document Analysis */
+        .analysis-mobile-image {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .analysis-mobile-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+           
+        }
+        /* Mobile Image for Document Analysis */
+        .analyze-mobile-image {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .analyze-mobile-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+           
+        }
+
+        /* Feature Cards */
+        .hero-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+            background: #eef5fb;
+            border-radius: 17px;
+            padding: 60px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .hero-text {
+            flex: 1.1;
+            max-width: 50%;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin: 0 0 20px 0;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .hero-image {
+            flex: 0.9;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image img {
+            width: 420px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Footer */
+        footer {
+            color: #ffffff;
+            padding: 80px 24px 40px;
+            text-align: center;
+            background: transparent;
+        }
+
+        .footer-content {
+            max-width: 100px;
+            margin: 0 auto;
+        }
+
+        .footer-content h2 {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .footer-content p {
+            font-size: clamp(1rem, 2vw, 1.125rem);
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 32px;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        .footer-copyright {
+            margin-top: 40px;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .analysis-main {
+                flex-direction: column;
+                text-align: center;
+                gap: 40px;
+            }
+            
+            .upload-box {
+                max-width: 100%;
+            }
+            
+            .hero-card {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 50px 32px;
+            }
+            
+            .feature-visual {
+                order: -1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 40px 24px;
+            }
+
+            .hero-text {
+                max-width: 100%;
+            }
+
+            .hero-image img {
+                width: 300px;
+            }
+            
+            .analysis-container {
+                padding: 30px;
+            }
+            
+            .analysis-main {
+                gap: 30px;
+            }
+            
+            .waitlist-section {
+                padding: 40px 24px;
+            }
+            
+            /* Mobile-specific styles - show only image */
+            .analysis-text.mobile-hidden {
+                display: none;
+            }
+            
+            .upload-box.mobile-hidden {
+                display: none;
+            }
+            
+            .analysis-mobile-image.mobile-visible {
+                display: block;
+                width: 100%;
+            }
+            
+            .analyze-mobile-image.mobile-visible {
+                display: block;
+                width: 100%;
+            }
+            
+            /* Adjust container for mobile when only showing image */
+            .analysis-container.mobile-layout {
+                padding: 0;
+                background: transparent;
+                box-shadow: none;
+            }
+            
+            .analysis-main.mobile-layout {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            :root { --brand-gap: 0.2rem; }
+            header {
+                padding: 12px 16px;
+            }
+            .brand .logo { width: 20px; }
+            h4 { font-size: 0.92rem; }
+            .top-btn { 
+                padding: 8px 16px; 
+                font-size: 0.9rem; 
+                min-width: auto;
+            }
+            .hero {
+                padding: 100px 16px 40px;
+            }
+            .hero-cta {
+                margin: 40px auto 40px;
+                padding: 0 16px;
+            }
+            .email-input-combined {
+                padding-right: 120px;
+                font-size: 0.9rem;
+            }
+            .cta-button-combined {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+                right: 4px;
+            }
+            .waitlist-input {
+                padding-right: 120px;
+                font-size: 0.9rem;
+            }
+            .waitlist-button {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+                right: 4px;
+            }
+            .phone-mockup {
+                margin: 40px auto;
+                max-width: 100%;
+                padding: 0 16px;
+            }
+            .phone-container {
+                width: 100%;
+                max-width: 100%;
+            }
+            .document-analysis-section {
+                margin: 40px auto;
+                padding: 0 16px;
+            }
+            .analysis-container {
+                padding: 24px;
+            }
+            .analysis-text h1 {
+                font-size: 1.5rem;
+                margin-bottom: 12px;
+            }
+            .analysis-text p {
+                font-size: 0.95rem;
+            }
+            .upload-box {
+                padding: 20px;
+            }
+            .upload-area {
+                padding: 32px 16px;
+            }
+            .upload-icon {
+                font-size: 36px;
+            }
+            .select-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            .hero-card {
+                padding: 32px 20px;
+                border-radius: 16px;
+                margin: 20px auto;
+            }
+            .hero-text h1 {
+                font-size: 1.5rem;
+                margin-bottom: 12px;
+            }
+            .hero-text p {
+                font-size: 0.95rem;
+            }
+            .waitlist-section {
+                margin: 40px auto;
+                padding: 40px 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                padding: 90px 12px 30px;
+            }
+            .hero h2 {
+                font-size: clamp(1.5rem, 6vw, 2rem);
+            }
+            .hero-cta {
+                margin: 30px auto 30px;
+                padding: 0 12px;
+            }
+            .email-input-combined {
+                padding-right: 110px;
+                font-size: 0.85rem;
+            }
+            .cta-button-combined {
+                padding: 7px 12px;
+                font-size: 0.75rem;
+            }
+            .waitlist-input {
+                padding-right: 110px;
+                font-size: 0.85rem;
+            }
+            .waitlist-button {
+                padding: 7px 12px;
+                font-size: 0.75rem;
+            }
+            .phone-mockup {
+                margin: 30px auto;
+                padding: 0 12px;
+            }
+            .document-analysis-section {
+                padding: 0 12px;
+            }
+            .analysis-container {
+                padding: 20px;
+            }
+            .hero-card {
+                padding: 28px 16px;
+                gap: 28px;
+                border-radius: 12px;
+            }
+            .hero-text h1 {
+                font-size: 1.35rem;
+            }
+            .hero-text p {
+                font-size: 0.9rem;
+            }
+            .hero-image img {
+                width: 250px;
+            }
+        }
+        
+        @media (max-width: 380px) {
+            .brand .logo { width: 18px; }
+            h4 { font-size: 0.85rem; }
+            .top-btn { 
+                padding: 6px 10px; 
+                font-size: 0.8rem; 
+                min-width: auto;
+            }
+            .hero {
+                padding: 80px 10px 25px;
+            }
+            .hero h2 {
+                font-size: 1.4rem;
+            }
+            .hero-cta {
+                margin: 25px auto 25px;
+                padding: 0 10px;
+            }
+            .email-input-combined {
+                padding-right: 100px;
+                font-size: 0.8rem;
+            }
+            .cta-button-combined {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+                right: 3px;
+            }
+            .waitlist-input {
+                padding-right: 100px;
+                font-size: 0.8rem;
+            }
+            .waitlist-button {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+                right: 3px;
+            }
+            .phone-mockup {
+                margin: 25px auto;
+                padding: 0 10px;
+            }
+            .analysis-text h1 {
+                font-size: 1.25rem;
+                margin-bottom: 10px;
+            }
+            .analysis-text p {
+                font-size: 0.85rem;
+            }
+            .hero-card {
+                padding: 24px 12px;
+                gap: 24px;
+                border-radius: 12px;
+            }
+            .hero-text h1 {
+                font-size: 1.25rem;
+                margin-bottom: 10px;
+            }
+            .hero-text p {
+                font-size: 0.85rem;
+            }
+            .hero-image img {
+                width: 200px;
+            }
+            .waitlist-section {
+                margin: 30px auto;
+                padding: 30px 10px;
+            }
+        }
+        /* Mobile Image for Feature Cards - Full replacement */
+.analyze-mobile-image {
+    display: none;
+    width: 100%;
+    text-align: center;
+}
+
+.analyze-mobile-image img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+    /* Hide desktop content on mobile */
+    .hero-text.mobile-hidden,
+    .hero-image.mobile-hidden {
+        display: none;
+    }
+    
+    /* Show mobile image on mobile */
+    .analyze-mobile-image.mobile-visible {
+        display: block;
+        width: 100%;
+    }
+    
+    /* Adjust card layout for mobile when showing only image */
+    .hero-card.mobile-layout {
+        padding: 30px 20px;
+        text-align: center;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <img src="Skool Union.png" alt="Skool Union logo" class="logo">
+            <h4>SkoolAI</h4>
+        </div>
+        <button style="background-color: blue;" class="top-btn">Join the waitlist</button>
+    </header>
+
+    <section class="hero">
+        <h2>Study smarter. Prepare faster.</h2>
+        <h2 class="highlight" style="color: blue;">Ace your exams with SkoolAI.</h2> 
+        <h6>SkoolAI helps you understand exactly what to read by analyzing your past questions, lecture materials, and notes.Instantly dicover repeated questions,high-probability topics,patterns,and auto-generated practice questions—all in one place</h6>
+    </section>
+    
+    <div class="hero-cta">
+        <input type="email" class="email-input-combined" placeholder="Enter your email address">
+        <button style="background-color: blue;" class="cta-button-combined">Join the waitlist</button>
+    </div>
+    
+    <section class="hero">
+        <center><img style="max-width: 1000px; width: 100%;" src="Skool Landing .jpg" alt="Phone mockup showing SkoolAI interface"></center>
+    </section>
+
+    <!-- Smart Document Analysis Section -->
+    <section class="document-analysis-section">
+        <div class="analysis-container" id="analysisContainer">
+            <div class="analysis-main" id="analysisMain">
+                <div class="analysis-text" id="analysisText">
+                    <h1>Smart Document<br>Analysis</h1>
+                    <p>Upload any past questions or notes and let<br>SkoolAI extract repeated questions, key topics,<br>and hidden patterns.</p>
+                </div>
+        
+                <!-- Upload Box - Will be hidden on mobile -->
+                <div class="upload-box" id="uploadBox">
+                    <div class="upload-header">Upload documents</div>
+        
+                    <div class="upload-area">
+                        <div class="upload-icon">☁</div>
+                        <div class="upload-text">Upload documents</div>
+                        <button class="select-btn">Select Files</button>
+                    </div>
+        
+                    <div class="file-info">
+                        Allowed formats PDF, Word, jpg & png, less than 10mb
+                    </div>
+        
+                    <button class="analyse-btn">Analyse Documents</button>
+                </div>
+                
+                <!-- Mobile Image - Will be shown on mobile -->
+                <div class="analysis-mobile-image" id="mobileImage">
+                    <img src="fg.jpg" alt="Smart Document Analysis Preview">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Standalone Waitlist Section -->
+    <section class="waitlist-section">
+     
+        <div class="waitlist-cta">
+            <input type="email" class="waitlist-input" placeholder="Enter your email address">
+            <button style="background-color: blue;" class="waitlist-button">Join the waitlist</button>
+        </div>
+    </section>
+
+    <!-- Feature Cards -->
+<div class="hero-card" id="analyzeCard">
+    <div class="hero-text">
+        <h1>Analyze past questions</h1>
+        <p>Get repeated questions, high-likelihood topics, and exam patterns in seconds.</p>
+        <button class="top-btn" style="background-color: blue;">Join the waitlist</button>
+    </div>
+    
+    <!-- Desktop Content - Will be shown on desktop -->
+    <div class="hero-image" id="desktopContent">
+        <img src="Property 1=1.jpg" alt="Desktop preview of analyzing past questions">
+    </div>
+
+    <!-- Mobile Image - Will be shown on mobile (replaces everything) -->
+    <div class="analyze-mobile-image" id="mobImage">
+        <img src="Mobile3.jpg" alt="Mobile preview of analyzing past questions">
+    </div>
+</div>
+    
+    
+    
+    <div class="hero-card">
+        <div class="hero-text">
+            <h1>Challenge the AI and ask <br> anything</h1>
+            <p>Upload notes ans ask questions directly to clarify topics you don't <br> understand</p>
+            <button class="top-btn" style="background-color: blue;">Join the waitlist</button>
+        </div>
+        <div class="hero-image">
+            <img src="Mobile3.jpg" alt="preview">
+        </div>
+    </div>
+    
+    <div class="hero-card">
+        <div class="hero-text">
+            <h1>Study with confidence</h1>
+            <p>SkoolAI highlights the areas to focus on so you don't waste time <br> reading everything</p>
+            <button class="top-btn" style="background-color: blue;">Join the waitlist</button>
+        </div>
+        <div class="hero-image">
+            <img src="Property 1=4.jpg" alt="preview">
+        </div>
+    </div>
+
+    <footer>
+        <center><img src="Footer mobile.jpg" alt="Footer image" style="max-width: 100%; width: 100%;"></center> 
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const analysisText = document.getElementById('analysisText');
+            const analyzeText = document.getElementById('analyzeText');
+            const uploadBox = document.getElementById('uploadBox');
+            const mobileImage = document.getElementById('mobileImage');
+            const mobImage = document.getElementById('mobImage');
+            const analysisContainer = document.getElementById('analysisContainer');
+            const analyzeContainer = document.getElementById('analyzeContainer');
+            const analysisMain = document.getElementById('analysisMain');
+            const analyzeMain = document.getElementById('analyzeMain');
+            
+            // Function to check if device is mobile
+            function isMobileDevice() {
+                return window.innerWidth <= 768;
+            }
+            
+            // Function to update layout based on screen size
+            function updateLayout() {
+                if (isMobileDevice()) {
+                    // On mobile: hide text AND upload box, show ONLY image
+                    analysisText.style.display = 'none';
+                    analysisText.classList.add('mobile-hidden');
+                    
+                    uploadBox.style.display = 'none';
+                    uploadBox.classList.add('mobile-hidden');
+                    
+                    mobileImage.style.display = 'block';
+                    mobileImage.classList.add('mobile-visible');
+                    
+                    // Adjust container styling for mobile
+                    analysisContainer.classList.add('mobile-layout');
+                    analysisMain.classList.add('mobile-layout');
+                    
+                    // Make image take full width
+                    analysisContainer.style.padding = '0';
+                    analysisContainer.style.background = 'transparent';
+                    analysisContainer.style.boxShadow = 'none';
+                    
+                } else {
+                    // On desktop: show text AND upload box, hide image
+                    analysisText.style.display = 'block';
+                    analysisText.classList.remove('mobile-hidden');
+                    
+                    uploadBox.style.display = 'block';
+                    uploadBox.classList.remove('mobile-hidden');
+                    
+                    mobileImage.style.display = 'none';
+                    mobileImage.classList.remove('mobile-visible');
+                    
+                    // Restore container styling for desktop
+                    analysisContainer.classList.remove('mobile-layout');
+                    analysisMain.classList.remove('mobile-layout');
+                    
+                    // Restore original container styles
+                    analysisContainer.style.padding = '';
+                    analysisContainer.style.background = '';
+                    analysisContainer.style.boxShadow = '';
+                }
+            }
+            
+            // Initial check
+            updateLayout();
+            
+            // Update on window resize
+            window.addEventListener('resize', updateLayout);
+            
+            // Also handle orientation change for mobile devices
+            window.addEventListener('orientationchange', function() {
+                // Add a small delay to ensure accurate screen dimensions
+                setTimeout(updateLayout, 100);
+            });
+        });
+        // Function to update feature card layout based on screen size
+function updateFeatureCardLayout() {
+    const analyzeCard = document.getElementById('analyzeCard');
+    const heroText = analyzeCard.querySelector('.hero-text');
+    const desktopContent = document.getElementById('desktopContent');
+    const mobImage = document.getElementById('mobImage');
+    
+    if (window.innerWidth <= 768) {
+        // On mobile: hide ALL desktop content (text + desktop image), show ONLY mobile image
+        heroText.style.display = 'none';
+        heroText.classList.add('mobile-hidden');
+        
+        desktopContent.style.display = 'none';
+        desktopContent.classList.add('mobile-hidden');
+        
+        mobImage.style.display = 'block';
+        mobImage.classList.add('mobile-visible');
+        
+        // Adjust card styling for mobile
+        analyzeCard.classList.add('mobile-layout');
+        
+    } else {
+        // On desktop: show ALL desktop content (text + desktop image), hide mobile image
+        heroText.style.display = 'block';
+        heroText.classList.remove('mobile-hidden');
+        
+        desktopContent.style.display = 'flex';
+        desktopContent.classList.remove('mobile-hidden');
+        
+        mobImage.style.display = 'none';
+        mobImage.classList.remove('mobile-visible');
+        
+        // Restore card styling for desktop
+        analyzeCard.classList.remove('mobile-layout');
+    }
+}
+
+// Call this function in your existing event listeners
+    </script>
+</body>
+</html>
