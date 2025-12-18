@@ -1022,13 +1022,22 @@ footer > * {
 /* Mobile */
 @media (max-width: 768px) {
     .image-footer {
-        height: auto;
+        height: 100vh;
     }
 
     .image-footer img {
         height: auto;
         object-fit: contain; /* no crop on mobile */
     }
+    /* ===== Footer Image ===== */
+
+/* Mobile */
+@media (max-width: 768px) {
+    .image-footer {
+        min-height: 100vh;   /* fills the remaining screen */
+    }
+}
+
 }
 /* ===== POPPING LOADER ===== */
 #page-loader {
@@ -1278,7 +1287,7 @@ footer > * {
 
 
   <footer class="image-footer">
-    <img src="Footer mobile.jpg" alt="SkoolAI footer">
+    <img src="footer mobile.jpg" alt="SkoolAI footer">
 </footer>
 
 
@@ -1417,4 +1426,3 @@ function updateFeatureCardLayout() {
 
 </body>
 </html>
-
