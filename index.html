@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="images">
     <title>SkoolAI</title>
     <style>
         /* Load local SF Pro Rounded fonts placed in the same folder as this HTML file */
@@ -494,6 +495,7 @@
         }
 
 
+
         /* Responsive Design */
         @media (max-width: 968px) {
             .analysis-main {
@@ -823,14 +825,14 @@
 /* Replace your existing footer styles with these */
 footer {
     position: relative;
-    width: 100%;
-    min-height: 400px; /* Adjust based on your image's aspect ratio – test with 300px–600px */
-    background: #000000 url('') center center / cover no-repeat; /* Dark base + your image as background */
+    width: 90%;
+    min-height: 700px; /* Adjust based on your image's aspect ratio – test with 300px–600px */
+    
     color: #ffffff;
-    padding: 80px 24px 40px;
+   
     text-align: center;
     overflow: hidden;
-    margin-top: 80px; /* Space above footer */
+    margin-top: 50px; /* Space above footer */
 }
 
 /* Semi-transparent overlay for better readability if image has light areas */
@@ -838,7 +840,7 @@ footer::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.4); /* Adjust opacity (0.3–0.6) as needed */
+   
     z-index: 1;
 }
 
@@ -858,7 +860,7 @@ footer > * {
 }
 
 /* On larger screens, hide fallback img and rely on background */
-@media (min-width: 769px) {
+@media (max-width: 769px) {
     .footer-fallback-img {
         display: none;
     }
@@ -874,6 +876,161 @@ footer > * {
         padding: 60px 16px 30px;
     }
 }
+
+/* Analyze Past Questions – Mobile turns into image */
+
+/* Default (desktop) */
+.analyze-mobile {
+    display: none;
+}
+
+.analyze-desktop {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .analyze-desktop {
+        display: none; /* hides ALL text + buttons + desktop image */
+    }
+
+    .analyze-mobile {
+        display: block; /* shows ONLY the image */
+        text-align: center;
+    }
+
+    .analyze-mobile img {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        border-radius: 14px;
+    }
+
+    .analyze-card {
+        padding: 20px;
+    }
+}
+/* ===== Mobile Image Replacement Sections ===== */
+
+/* Desktop default */
+.analyze-mobile,
+.challenge-mobile {
+    display: none;
+}
+
+.analyze-desktop,
+.challenge-desktop {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .analyze-desktop,
+    .challenge-desktop {
+        display: none; /* hide everything */
+    }
+
+    .analyze-mobile,
+    .challenge-mobile {
+        display: block; /* show ONLY image */
+        text-align: center;
+    }
+
+    .analyze-mobile img,
+    .challenge-mobile img {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        border-radius: 14px;
+    }
+
+    .analyze-card,
+    .challenge-card {
+        padding: 20px;
+    }
+}
+/* ===== Study With Confidence – Mobile Image Replacement ===== */
+
+/* Desktop default */
+.confidence-mobile {
+    display: none;
+}
+
+.confidence-desktop {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .confidence-desktop {
+        display: none; /* hide all desktop content */
+    }
+
+    .confidence-mobile {
+        display: block; /* show only image */
+        text-align: center;
+    }
+
+    .confidence-mobile img {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        border-radius: 14px;
+    }
+
+    .confidence-card {
+        padding: 20px;
+    }
+}
+
+
+/* ===== Full-Screen Image Footer ===== */
+
+.image-footer {
+    width: 100%;
+    height: 100vh; /* fills laptop screen height */
+    overflow: hidden;
+}
+
+.image-footer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* fills screen without distortion */
+    display: block;
+}
+
+/* Laptop & desktop fine-tuning */
+@media (min-width: 1024px) {
+    .image-footer {
+        height: 100vh; /* full laptop screen */
+    }
+}
+
+/* Tablet */
+@media (max-width: 1023px) {
+    .image-footer {
+        height: 70vh;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .image-footer {
+        height: auto;
+    }
+
+    .image-footer img {
+        height: auto;
+        object-fit: contain; /* no crop on mobile */
+    }
+}
+
 
     </style>
 </head>
@@ -944,64 +1101,79 @@ footer > * {
         </div>
     </section>
 
-    <!-- Feature Cards -->
-<div class="hero-card" id="analyzeCard">
-    <div class="hero-text">
-        <h1>Analyze past questions</h1>
-        <p>Get repeated questions, high-likelihood topics, and exam patterns in seconds.</p>
-        <button class="top-btn" style="background-color: blue;">Join the waitlist</button>
-    </div>
-    
-    <!-- Desktop Content - Will be shown on desktop -->
-    <div class="hero-image" id="desktopContent">
-        <img src="Property 1=1.jpg" alt="Desktop preview of analyzing past questions">
+   <div class="hero-card analyze-card">
+    <!-- Desktop content -->
+    <div class="analyze-desktop">
+        <div class="hero-text">
+            <h1>Analyze past questions</h1>
+            <p>Get repeated questions, high-likelihood topics, and exam patterns in seconds.</p>
+            <button class="top-btn">Join the waitlist</button>
+        </div>
+
+        <div class="hero-image">
+            <img src="Property 1=1.jpg" alt="Desktop preview">
+        </div>
     </div>
 
-    <!-- Mobile Image - Will be shown on mobile (replaces everything) -->
-    <div class="analyze-mobile-image" id="mobImage">
-        <img src="Mobile3.jpg" alt="Mobile preview of analyzing past questions">
+    <!-- Mobile replacement image -->
+    <div class="analyze-mobile">
+        <img src="Mobile1.jpg" alt="Mobile analyze preview">
     </div>
 </div>
+
     
     
     
-    <div class="hero-card">
+   <div class="hero-card challenge-card">
+    <!-- Desktop content -->
+    <div class="challenge-desktop">
         <div class="hero-text">
             <h1>Challenge the AI and ask <br> anything</h1>
-            <p>Upload notes ans ask questions directly to clarify topics you don't <br> understand</p>
-            <button class="top-btn" style="background-color: blue;">Join the waitlist</button>
+            <p>
+                Upload notes and ask questions directly to clarify topics you don’t understand
+            </p>
+            <button class="top-btn">Join the waitlist</button>
         </div>
+
         <div class="hero-image">
-            <img src="Mobile3.jpg" alt="preview">
-        </div>
-    </div>
-    
-    <div class="hero-card">
-        <div class="hero-text">
-            <h1>Study with confidence</h1>
-            <p>SkoolAI highlights the areas to focus on so you don't waste time <br> reading everything</p>
-            <button class="top-btn" style="background-color: blue;">Join the waitlist</button>
-        </div>
-        <div class="hero-image">
-            <img src="Property 1=4.jpg" alt="preview">
+            <img src="Property 1=2.jpg" alt="Challenge AI desktop preview">
         </div>
     </div>
 
-    <footer>
-    <!-- Optional: Keep a foreground img for mobile/small screens if background doesn't render well -->
-   
+    <!-- Mobile replacement image -->
+    <div class="challenge-mobile">
+        <img src="kk.jpg.jpg" alt="Challenge AI mobile preview">
+    </div>
+</div>
+
     
-    <!-- If you want to add real text links/copyright below the image, uncomment this:
-    <div class="footer-content">
-        <p>&copy; 2025 SkoolAI. All rights reserved.</p>
-        <div class="footer-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Contact</a>
+    <div class="hero-card confidence-card">
+    <!-- Desktop content -->
+    <div class="confidence-desktop">
+        <div class="hero-text">
+            <h1>Study with confidence</h1>
+            <p>
+                SkoolAI highlights the areas to focus on so you don’t waste time reading everything
+            </p>
+            <button class="top-btn">Join the waitlist</button>
+        </div>
+
+        <div class="hero-image">
+            <img src="Property 1=4.jpg" alt="Study with confidence desktop preview">
         </div>
     </div>
-    -->
+
+    <!-- Mobile replacement image -->
+    <div class="confidence-mobile">
+        <img src="Mobile4.jpg" alt="Study with confidence mobile preview">
+    </div>
+</div>
+
+
+  <footer class="image-footer">
+    <img src="footer mobile.jpg" alt="SkoolAI footer">
 </footer>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1117,6 +1289,3 @@ function updateFeatureCardLayout() {
     </script>
 </body>
 </html>
-
-
-
