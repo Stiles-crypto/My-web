@@ -1030,12 +1030,42 @@ footer > * {
         object-fit: contain; /* no crop on mobile */
     }
 }
+/* ===== Pinterest-style Page Loader ===== */
+#page-loader {
+    position: fixed;
+    inset: 0;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+
+/* Loader image animation */
+#page-loader img {
+    width: 90px;
+    height: auto;
+    animation: pulse 1.4s ease-in-out infinite;
+}
+
+/* Subtle Pinterest-like pulse */
+@keyframes pulse {
+    0% { transform: scale(0.9); opacity: 0.6; }
+    50% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.6; }
+}
 
 
     </style>
 </head>
 <body>
     <header>
+        <!-- Page Loader -->
+<div id="page-loader">
+    <img src="skool union.jpg" alt="SkoolAI Loading">
+</div>
+
+        
         <div class="brand">
             <img src="Skool Union.png" alt="Skool Union logo" class="logo">
             <h4>SkoolAI</h4>
@@ -1285,7 +1315,23 @@ function updateFeatureCardLayout() {
     }
 }
 
+
 // Call this function in your existing event listeners
     </script>
+    <script>
+    window.addEventListener("load", function () {
+        const loader = document.getElementById("page-loader");
+
+        // Smooth fade-out
+        loader.style.transition = "opacity 0.4s ease";
+        loader.style.opacity = "0";
+
+        setTimeout(() => {
+            loader.style.display = "none";
+        }, 400);
+    });
+</script>
+
+
 </body>
 </html>
