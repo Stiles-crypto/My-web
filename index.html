@@ -1030,40 +1030,117 @@ footer > * {
         object-fit: contain; /* no crop on mobile */
     }
 }
-/* ===== Pinterest-style Page Loader ===== */
+/* ===== POPPING LOADER ===== */
 #page-loader {
     position: fixed;
     inset: 0;
-    background: #ffffff;
+    background: radial-gradient(circle at center, #f4f9ff, #ffffff);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 99999;
+    overflow: hidden;
 }
 
-/* Loader image animation */
-#page-loader img {
-    width: 90px;
-    height: auto;
-    animation: pulse 1.4s ease-in-out infinite;
+/* Expanding pulse ring */
+.loader-ring {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba(31,111,235,0.08);
+    animation: ringPulse 2.5s ease-out infinite;
 }
 
-/* Subtle Pinterest-like pulse */
-@keyframes pulse {
-    0% { transform: scale(0.9); opacity: 0.6; }
-    50% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(0.9); opacity: 0.6; }
+@keyframes ringPulse {
+    0% {
+        transform: scale(0.6);
+        opacity: 0.6;
+    }
+    100% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+}
+
+/* Center content */
+.loader-content {
+    position: relative;
+    text-align: center;
+    animation: popIn 0.8s cubic-bezier(.17,.67,.32,1.4);
+}
+
+/* Logo POP animation */
+.loader-content img {
+    width: 120px;
+    animation: heartPop 1.6s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(31,111,235,0.35));
+}
+
+/* Text */
+.loader-content p {
+    margin-top: 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1f6feb;
+    opacity: 0;
+    animation: textPop 1.2s ease forwards;
+    animation-delay: 0.6s;
+}
+
+/* Entrance pop */
+@keyframes popIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    80% {
+        transform: scale(1.08);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Heartbeat pop loop */
+@keyframes heartPop {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+/* Text pop */
+@keyframes textPop {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 
     </style>
 </head>
 <body>
-    <header>
-        <!-- Page Loader -->
+<!-- Page Loader -->
 <div id="page-loader">
-    <img src="skool union.jpg" alt="SkoolAI Loading">
+    <div class="loader-ring"></div>
+
+    <div class="loader-content">
+        <img src="Skool Union.png" alt="SkoolAI Loading">
+     
+    </div>
 </div>
+
+    <header>
+ 
+
 
         
         <div class="brand">
@@ -1316,19 +1393,24 @@ function updateFeatureCardLayout() {
 }
 
 
-// Call this function in your existing event listeners
     </script>
-    <script>
+<script>
+    const MIN_LOAD_TIME = 10000; // 30 seconds
+    const startTime = Date.now();
+
     window.addEventListener("load", function () {
         const loader = document.getElementById("page-loader");
-
-        // Smooth fade-out
-        loader.style.transition = "opacity 0.4s ease";
-        loader.style.opacity = "0";
+        const elapsedTime = Date.now() - startTime;
+        const remainingTime = Math.max(0, MIN_LOAD_TIME - elapsedTime);
 
         setTimeout(() => {
-            loader.style.display = "none";
-        }, 400);
+            loader.style.transition = "opacity 0.7s ease";
+            loader.style.opacity = "0";
+
+            setTimeout(() => {
+                loader.style.display = "none";
+            }, 700);
+        }, remainingTime);
     });
 </script>
 
