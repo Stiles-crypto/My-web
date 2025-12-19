@@ -6,12 +6,11 @@
     <link rel="stylesheet" href="images">
     <title>SkoolAI</title>
     <style>
-
         * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         /* Load local SF Pro Rounded fonts placed in the same folder as this HTML file */
         @font-face {
@@ -37,15 +36,13 @@
             --text-light: #666;
             --bg-light-blue: #eef5fb;
         }
-        * {
-            box-sizing: border-box;
-        }
+        
         html, body {
-    width: 100%;
-    height: auto;
-    min-height: 100%;
-    overflow-x: hidden;
-}
+            width: 100%;
+            height: auto;
+            min-height: 100%;
+            overflow-x: hidden;
+        }
 
         body {
             font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -175,21 +172,28 @@
             overflow-wrap: break-word;
         }
 
-        /* Hero CTA - Combined input + button */
+        /* Hero CTA - Fixed Input + Button */
         .hero-cta {
             position: relative;
             max-width: 500px;
-            margin: 50px auto 60px;
+            margin: 50px auto 20px;
+        }
+
+        /* Container for input and button */
+        .input-button-container {
+            position: relative;
+            width: 100%;
         }
 
         .email-input-combined {
-            padding: 14px 150px 14px 18px;
+            padding: 14px 120px 14px 18px; /* Reduced right padding */
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
             font-size: 1rem;
             width: 100%;
             transition: border-color 0.2s;
+            box-sizing: border-box;
         }
 
         .email-input-combined:focus {
@@ -205,7 +209,7 @@
             background: var(--primary-blue);
             color: #ffffff;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 18px; /* Adjusted padding */
             border-radius: 8px;
             font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
             font-weight: 700;
@@ -213,13 +217,15 @@
             cursor: pointer;
             transition: opacity 0.2s;
             white-space: nowrap;
+            max-width: 130px; /* Set maximum width */
+            box-sizing: border-box;
         }
 
         .cta-button-combined:hover {
             opacity: 0.9;
         }
 
-        /* Waitlist Section - Standalone section with combined input+button */
+        /* Waitlist Section - Fixed Input + Button */
         .waitlist-section {
             max-width: 1200px;
             margin: 80px auto;
@@ -239,13 +245,14 @@
         }
 
         .waitlist-input {
-            padding: 14px 150px 14px 18px;
+            padding: 14px 120px 14px 18px; /* Reduced right padding */
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
             font-size: 1rem;
             width: 100%;
             transition: border-color 0.2s;
+            box-sizing: border-box;
         }
 
         .waitlist-input:focus {
@@ -261,7 +268,7 @@
             background: var(--primary-blue);
             color: #ffffff;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 18px; /* Adjusted padding */
             border-radius: 8px;
             font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
             font-weight: 700;
@@ -269,6 +276,8 @@
             cursor: pointer;
             transition: opacity 0.2s;
             white-space: nowrap;
+            max-width: 130px; /* Set maximum width */
+            box-sizing: border-box;
         }
 
         .waitlist-button:hover {
@@ -305,6 +314,101 @@
             border-radius: 0;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             object-fit: contain;
+        }
+
+        /* Responsive Design - Mobile */
+        @media (max-width: 768px) {
+            .hero-cta {
+                padding: 0 16px;
+                margin: 30px auto 10px;
+            }
+            
+            .email-input-combined {
+                padding-right: 110px;
+                font-size: 0.95rem;
+            }
+            
+            .cta-button-combined {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+                max-width: 120px;
+            }
+            
+            .waitlist-cta {
+                padding: 0 16px;
+            }
+            
+            .waitlist-input {
+                padding-right: 110px;
+                font-size: 0.95rem;
+            }
+            
+            .waitlist-button {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+                max-width: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-cta {
+                padding: 0 16px;
+                margin: 20px auto 10px;
+            }
+            
+            .email-input-combined {
+                padding-right: 100px;
+                font-size: 0.9rem;
+            }
+            
+            .cta-button-combined {
+                padding: 9px 14px;
+                font-size: 0.85rem;
+                max-width: 110px;
+                right: 4px;
+            }
+            
+            .waitlist-cta {
+                padding: 0 16px;
+            }
+            
+            .waitlist-input {
+                padding-right: 100px;
+                font-size: 0.9rem;
+            }
+            
+            .waitlist-button {
+                padding: 9px 14px;
+                font-size: 0.85rem;
+                max-width: 110px;
+                right: 4px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .email-input-combined {
+                padding-right: 90px;
+                font-size: 0.85rem;
+            }
+            
+            .cta-button-combined {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+                max-width: 100px;
+                right: 3px;
+            }
+            
+            .waitlist-input {
+                padding-right: 90px;
+                font-size: 0.85rem;
+            }
+            
+            .waitlist-button {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+                max-width: 100px;
+                right: 3px;
+            }
         }
 
         /* Smart Document Analysis Section */
@@ -604,15 +708,6 @@
                 margin: 40px auto 40px;
                 padding: 0 16px;
             }
-            .email-input-combined {
-                padding-right: 120px;
-                font-size: 0.9rem;
-            }
-            .cta-button-combined {
-                padding: 8px 14px;
-                font-size: 0.8rem;
-                right: 4px;
-            }
             .waitlist-input {
                 padding-right: 120px;
                 font-size: 0.9rem;
@@ -687,14 +782,6 @@
                 margin: 30px auto 30px;
                 padding: 0 12px;
             }
-            .email-input-combined {
-                padding-right: 110px;
-                font-size: 0.85rem;
-            }
-            .cta-button-combined {
-                padding: 7px 12px;
-                font-size: 0.75rem;
-            }
             .waitlist-input {
                 padding-right: 110px;
                 font-size: 0.85rem;
@@ -746,15 +833,6 @@
             .hero-cta {
                 margin: 25px auto 25px;
                 padding: 0 10px;
-            }
-            .email-input-combined {
-                padding-right: 100px;
-                font-size: 0.8rem;
-            }
-            .cta-button-combined {
-                padding: 6px 10px;
-                font-size: 0.7rem;
-                right: 3px;
             }
             .waitlist-input {
                 padding-right: 100px;
@@ -1056,12 +1134,7 @@
 </head>
 <body>
 
-
     <header>
- 
-
-
-        
         <div class="brand">
             <img src="Skool Union.png" alt="Skool Union logo" class="logo">
             <h4>SkoolAI</h4>
@@ -1075,9 +1148,12 @@
         <h6>SkoolAI helps you understand exactly what to read by analyzing your past questions, lecture materials, and notes.Instantly dicover repeated questions,high-probability topics,patterns,and auto-generated practice questions—all in one place</h6>
     </section>
     
+    <!-- Fixed CTA Section -->
     <div class="hero-cta">
-        <input type="email" class="email-input-combined" placeholder="Enter your email address">
-        <button style="background-color: blue;" class="cta-button-combined">Join the waitlist</button>
+        <div class="input-button-container">
+            <input type="email" class="email-input-combined" placeholder="Enter your email address">
+            <button style="background-color: blue;" class="cta-button-combined">Join the waitlist</button>
+        </div>
     </div>
     
     <section class="hero">
@@ -1118,15 +1194,6 @@
         </div>
     </section>
 
-    <!-- Standalone Waitlist Section -->
-    <section class="waitlist-section">
-     
-        <div class="waitlist-cta">
-            <input type="email" class="waitlist-input" placeholder="Enter your email address">
-            <button style="background-color: blue;" class="waitlist-button">Join the waitlist</button>
-        </div>
-    </section>
-
    <div class="hero-card analyze-card">
     <!-- Desktop content -->
     <div class="analyze-desktop">
@@ -1146,9 +1213,6 @@
         <img src="Mobile1.jpg" alt="Mobile analyze preview">
     </div>
 </div>
-
-    
-    
     
    <div class="hero-card challenge-card">
     <!-- Desktop content -->
@@ -1156,7 +1220,7 @@
         <div class="hero-text">
             <h1>Challenge the AI and ask <br> anything</h1>
             <p>
-                Upload notes and ask questions directly to clarify topics you don’t understand
+                Upload notes and ask questions directly to clarify topics you don't understand
             </p>
             <button class="top-btn">Join the waitlist</button>
         </div>
@@ -1171,7 +1235,6 @@
         <img src="kk.jpg.jpg" alt="Challenge AI mobile preview">
     </div>
 </div>
-
     
     <div class="hero-card confidence-card">
     <!-- Desktop content -->
@@ -1179,7 +1242,7 @@
         <div class="hero-text">
             <h1>Study with confidence</h1>
             <p>
-                SkoolAI highlights the areas to focus on so you don’t waste time reading everything
+                SkoolAI highlights the areas to focus on so you don't waste time reading everything
             </p>
             <button class="top-btn">Join the waitlist</button>
         </div>
@@ -1195,24 +1258,17 @@
     </div>
 </div>
 
-
  <footer class="footer">
     <img src="Footer mobile.jpg" alt="SkoolAI footer">
 </footer>
 
-
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const analysisText = document.getElementById('analysisText');
-            const analyzeText = document.getElementById('analyzeText');
             const uploadBox = document.getElementById('uploadBox');
             const mobileImage = document.getElementById('mobileImage');
-            const mobImage = document.getElementById('mobImage');
             const analysisContainer = document.getElementById('analysisContainer');
-            const analyzeContainer = document.getElementById('analyzeContainer');
             const analysisMain = document.getElementById('analysisMain');
-            const analyzeMain = document.getElementById('analyzeMain');
             
             // Function to check if device is mobile
             function isMobileDevice() {
@@ -1275,51 +1331,7 @@
                 setTimeout(updateLayout, 100);
             });
         });
-        // Function to update feature card layout based on screen size
-function updateFeatureCardLayout() {
-    const analyzeCard = document.getElementById('analyzeCard');
-    const heroText = analyzeCard.querySelector('.hero-text');
-    const desktopContent = document.getElementById('desktopContent');
-    const mobImage = document.getElementById('mobImage');
-    
-    if (window.innerWidth <= 768) {
-        // On mobile: hide ALL desktop content (text + desktop image), show ONLY mobile image
-        heroText.style.display = 'none';
-        heroText.classList.add('mobile-hidden');
-        
-        desktopContent.style.display = 'none';
-        desktopContent.classList.add('mobile-hidden');
-        
-        mobImage.style.display = 'block';
-        mobImage.classList.add('mobile-visible');
-        
-        // Adjust card styling for mobile
-        analyzeCard.classList.add('mobile-layout');
-        
-    } else {
-        // On desktop: show ALL desktop content (text + desktop image), hide mobile image
-        heroText.style.display = 'block';
-        heroText.classList.remove('mobile-hidden');
-        
-        desktopContent.style.display = 'flex';
-        desktopContent.classList.remove('mobile-hidden');
-        
-        mobImage.style.display = 'none';
-        mobImage.classList.remove('mobile-visible');
-        
-        // Restore card styling for desktop
-        analyzeCard.classList.remove('mobile-layout');
-    }
-}
-
-
     </script>
-
-
 
 </body>
 </html>
-
-
-
-
