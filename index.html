@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="images">
     <title>SkoolAI</title>
     <style>
+
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
         /* Load local SF Pro Rounded fonts placed in the same folder as this HTML file */
         @font-face {
             font-family: 'SF Pro Rounded';
@@ -33,13 +40,13 @@
         * {
             box-sizing: border-box;
         }
-        html, body { 
-            height: 100%; 
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            width: 100%;
-        }
+        html, body {
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
         body {
             font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
@@ -822,60 +829,7 @@
         text-align: center;
     }
 }
-/* Replace your existing footer styles with these */
-footer {
-    position: relative;
-    width: 90%;
-    min-height: 700px; /* Adjust based on your image's aspect ratio – test with 300px–600px */
-    
-    color: #ffffff;
-   
-    text-align: center;
-    overflow: hidden;
-    margin-top: 50px; /* Space above footer */
-}
 
-/* Semi-transparent overlay for better readability if image has light areas */
-footer::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-   
-    z-index: 1;
-}
-
-/* Style any content inside footer (e.g., if you add text later) */
-footer > * {
-    position: relative;
-    z-index: 2;
-}
-
-/* Fallback foreground image (visible on very small screens or if background fails) */
-.footer-fallback-img {
-    display: block;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    min-height: 300px;
-}
-
-/* On larger screens, hide fallback img and rely on background */
-@media (max-width: 769px) {
-    .footer-fallback-img {
-        display: none;
-    }
-    footer {
-        min-height: 500px; /* Taller on desktop for better look */
-    }
-}
-
-/* On very small screens, ensure it doesn't get too short */
-@media (max-width: 480px) {
-    footer {
-        min-height: 300px;
-        padding: 60px 16px 30px;
-    }
-}
 
 /* Analyze Past Questions – Mobile turns into image */
 
@@ -987,58 +941,22 @@ footer > * {
     .confidence-card {
         padding: 20px;
     }
+
+
 }
 
-
-/* ===== Full-Screen Image Footer ===== */
-
-.image-footer {
+.footer {
     width: 100%;
-    height: 100vh; /* fills laptop screen height */
-    overflow: hidden;
+    background: #000;
 }
 
-.image-footer img {
+.footer img {
     width: 100%;
-    height: 100%;
-    object-fit: cover; /* fills screen without distortion */
+    height: auto;
     display: block;
+    object-fit: cover;
 }
 
-/* Laptop & desktop fine-tuning */
-@media (min-width: 1024px) {
-    .image-footer {
-        height: 100vh; /* full laptop screen */
-    }
-}
-
-/* Tablet */
-@media (max-width: 1023px) {
-    .image-footer {
-        height: 70vh;
-    }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-    .image-footer {
-        height: 100vh;
-    }
-
-    .image-footer img {
-        height: auto;
-        object-fit: contain; /* no crop on mobile */
-    }
-    /* ===== Footer Image ===== */
-
-/* Mobile */
-@media (max-width: 768px) {
-    .image-footer {
-        min-height: 100vh;   /* fills the remaining screen */
-    }
-}
-
-}
 /* ===== POPPING LOADER ===== */
 #page-loader {
     position: fixed;
@@ -1286,9 +1204,10 @@ footer > * {
 </div>
 
 
-  <footer class="image-footer">
+ <footer class="footer">
     <img src="footer mobile.jpg" alt="SkoolAI footer">
 </footer>
+
 
 
     <script>
