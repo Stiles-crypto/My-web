@@ -1322,28 +1322,11 @@ function updateFeatureCardLayout() {
 
 
     </script>
-<script>
-    const MIN_LOAD_TIME = 9000; // 30 seconds
-    const startTime = Date.now();
 
-    window.addEventListener("load", function () {
-        const loader = document.getElementById("page-loader");
-        const elapsedTime = Date.now() - startTime;
-        const remainingTime = Math.max(0, MIN_LOAD_TIME - elapsedTime);
-
-        setTimeout(() => {
-            loader.style.transition = "opacity 0.7s ease";
-            loader.style.opacity = "0";
-
-            setTimeout(() => {
-                loader.style.display = "none";
-            }, 700);
-        }, remainingTime);
-    });
-</script>
 
 
 </body>
 </html>
+
 
 
