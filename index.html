@@ -1148,13 +1148,21 @@
         <h6>SkoolAI helps you understand exactly what to read by analyzing your past questions, lecture materials, and notes.Instantly dicover repeated questions,high-probability topics,patterns,and auto-generated practice questions—all in one place</h6>
     </section>
     
-    <!-- Fixed CTA Section -->
     <div class="hero-cta">
-        <div class="input-button-container">
-            <input type="email" class="email-input-combined" placeholder="Enter your email address">
-            <button style="background-color: blue;" class="cta-button-combined">Join the waitlist</button>
-        </div>
-    </div>
+    <form action="https://api.web3forms.com/submit" method="POST" class="input-button-container">
+        <!-- YOUR ACCESS KEY HERE -->
+        <input type="hidden" name="access_key" value="0e40131b-3ebd-479c-ae1e-3e6c413c623e">
+        
+        <!-- Custom subject so you know it's a waitlist signup -->
+        <input type="hidden" name="subject" value="🎉 New SkoolAI Waitlist Signup!">
+        
+        <!-- Optional: Keeps user on your page instead of redirecting -->
+        <input type="hidden" name="redirect" value="">
+
+        <input type="email" name="email" class="email-input-combined" placeholder="Enter your email address" required>
+        <button type="submit" class="cta-button-combined">Join the waitlist</button>
+    </form>
+</div>
     
     <section class="hero">
         <center><img style="max-width: 1000px; width: 100%;" src="Skool Landing .jpg" alt="Phone mockup showing SkoolAI interface"></center>
@@ -1332,6 +1340,80 @@
             });
         });
     </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Select all "Join the waitlist" buttons across the page
+        const waitlistButtons = document.querySelectorAll('.cta-button-combined, .waitlist-button, .top-btn, .select-btn, .analyse-btn');
 
+        waitlistButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Find the nearest email input field
+                const container = button.closest('.hero-cta, .waitlist-cta, .input-button-container') || document;
+                const emailInput = container.querySelector('input[type="email"]') || document.querySelector('.email-input-combined, .waitlist-input');
+
+                let email = emailInput ? emailInput.value.trim() : '';
+
+                if (!email) {
+                    alert('Please enter your email address to join the waitlist! 📧');
+                    return;
+                }
+
+                if (!email.includes('@') || !email.includes('.')) {
+                    alert('Please enter a valid email address! ❌');
+                    return;
+                }
+
+                // Exciting, professional, and detailed email body
+                const subject = encodeURIComponent('🎉 New SkoolAI Waitlist Subscriber!');
+
+                const body = encodeURIComponent(
+`Dear SkoolAI Team,
+
+We're growing fast! A new student just joined the SkoolAI waitlist and is ready to transform their exam preparation. 🚀
+
+📧 Subscriber Email: ${email}
+
+📅 Date & Time: ${new Date().toLocaleString('en-GB', { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric', 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit',
+    timeZoneName: 'short'
+})}
+
+This future top-performer is excited to:
+• Instantly analyze past questions and uncover repeated patterns
+• Identify high-probability topics and focus areas
+• Upload notes and challenge the AI with tough questions
+• Generate personalized practice questions
+• Study smarter, save time, and ace their exams with confidence! 🏆
+
+The demand for intelligent, AI-powered study tools is real — and SkoolAI is about to change the game for students everywhere.
+
+Let’s get ready to welcome them on launch day!
+
+Best regards,  
+SkoolAI Automatic Waitlist System 🤖  
+#StudySmarter #AceYourExams #SkoolAIComingSoon`
+                );
+
+                // Correct recipient email
+                const recipientEmail = 'bankoleadetimi@gmail.com';
+
+                // Open user's default email client with pre-filled message
+                window.location.href = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
+
+                // Success feedback and clear input
+                if (emailInput) emailInput.value = '';
+                alert('Thank you for joining the waitlist! 🎊\nWe\'ve received your email and will notify you as soon as SkoolAI launches!');
+            });
+        });
+    });
+</script>
 </body>
 </html>
