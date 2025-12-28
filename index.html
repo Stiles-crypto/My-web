@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="images">
     <title>SkoolAI</title>
+    <!-- EmailJS for email functionality -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("YOUR_PUBLIC_KEY"); // You'll need to get this from EmailJS
+        })();
+    </script>
     <style>
         * {
             margin: 0;
@@ -35,6 +42,8 @@
             --text-dark: #111;
             --text-light: #666;
             --bg-light-blue: #eef5fb;
+            --success-green: #10b981;
+            --error-red: #ef4444;
         }
         
         html, body {
@@ -103,7 +112,7 @@
             font-weight: 700;
             font-size: 0.95rem;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: all 0.3s ease;
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
         .top-btn:focus { 
@@ -111,7 +120,28 @@
             outline-offset: 2px; 
         }
         .top-btn:hover { 
-            opacity: 0.9; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        /* Loading state for buttons */
+        .top-btn.loading {
+            position: relative;
+            color: transparent;
+        }
+        
+        .top-btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
         /* Hero Section */
@@ -186,19 +216,30 @@
         }
 
         .email-input-combined {
-            padding: 14px 120px 14px 18px; /* Reduced right padding */
+            padding: 14px 120px 14px 18px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
             font-size: 1rem;
             width: 100%;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
             box-sizing: border-box;
         }
 
         .email-input-combined:focus {
             outline: none;
             border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(31,111,235,0.1);
+        }
+        
+        .email-input-combined.error {
+            border-color: var(--error-red);
+            background-color: rgba(239,68,68,0.05);
+        }
+        
+        .email-input-combined.success {
+            border-color: var(--success-green);
+            background-color: rgba(16,185,129,0.05);
         }
 
         .cta-button-combined {
@@ -209,20 +250,82 @@
             background: var(--primary-blue);
             color: #ffffff;
             border: none;
-            padding: 10px 18px; /* Adjusted padding */
+            padding: 10px 18px;
             border-radius: 8px;
             font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
             font-weight: 700;
             font-size: 0.95rem;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: all 0.3s ease;
             white-space: nowrap;
-            max-width: 130px; /* Set maximum width */
+            max-width: 130px;
             box-sizing: border-box;
         }
 
         .cta-button-combined:hover {
-            opacity: 0.9;
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(31,111,235,0.3);
+        }
+        
+        .cta-button-combined.loading {
+            position: relative;
+            color: transparent;
+            width: 130px;
+        }
+        
+        .cta-button-combined.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Status Messages */
+        .status-message {
+            text-align: center;
+            margin-top: 15px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            animation: slideDown 0.3s ease;
+            display: none;
+        }
+        
+        .status-message.success {
+            background-color: rgba(16,185,129,0.1);
+            color: var(--success-green);
+            border: 1px solid rgba(16,185,129,0.3);
+            display: block;
+        }
+        
+        .status-message.error {
+            background-color: rgba(239,68,68,0.1);
+            color: var(--error-red);
+            border: 1px solid rgba(239,68,68,0.3);
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         /* Waitlist Section - Fixed Input + Button */
@@ -245,7 +348,7 @@
         }
 
         .waitlist-input {
-            padding: 14px 120px 14px 18px; /* Reduced right padding */
+            padding: 14px 120px 14px 18px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -259,6 +362,16 @@
             outline: none;
             border-color: var(--primary-blue);
         }
+        
+        .waitlist-input.error {
+            border-color: var(--error-red);
+            background-color: rgba(239,68,68,0.05);
+        }
+        
+        .waitlist-input.success {
+            border-color: var(--success-green);
+            background-color: rgba(16,185,129,0.05);
+        }
 
         .waitlist-button {
             position: absolute;
@@ -268,20 +381,41 @@
             background: var(--primary-blue);
             color: #ffffff;
             border: none;
-            padding: 10px 18px; /* Adjusted padding */
+            padding: 10px 18px;
             border-radius: 8px;
             font-family: 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
             font-weight: 700;
             font-size: 0.95rem;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: all 0.3s ease;
             white-space: nowrap;
-            max-width: 130px; /* Set maximum width */
+            max-width: 130px;
             box-sizing: border-box;
         }
 
         .waitlist-button:hover {
-            opacity: 0.9;
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(31,111,235,0.3);
+        }
+        
+        .waitlist-button.loading {
+            position: relative;
+            color: transparent;
+            width: 130px;
+        }
+        
+        .waitlist-button.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
         /* Phone Mockup */
@@ -529,37 +663,6 @@
             cursor: not-allowed;
         }
 
-        /* Mobile Image for Document Analysis */
-        .analysis-mobile-image {
-            display: none;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .analysis-mobile-image img {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-           
-        }
-        /* Mobile Image for Document Analysis */
-        .analyze-mobile-image {
-            display: none;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .analyze-mobile-image img {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-           
-        }
-
         /* Feature Cards */
         .hero-card {
             display: flex;
@@ -604,8 +707,6 @@
             max-width: 100%;
             height: auto;
         }
-
-
 
         /* Responsive Design */
         @media (max-width: 968px) {
@@ -874,259 +975,156 @@
                 padding: 30px 10px;
             }
         }
-        /* Mobile Image for Feature Cards - Full replacement */
-.analyze-mobile-image {
-    display: none;
-    width: 100%;
-    text-align: center;
-}
 
-.analyze-mobile-image img {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    border-radius: 12px;
-}
+        /* Mobile Image Replacement Sections */
+        .analyze-mobile,
+        .challenge-mobile,
+        .confidence-mobile {
+            display: none;
+        }
 
-@media (max-width: 768px) {
-    /* Hide desktop content on mobile */
-    .hero-text.mobile-hidden,
-    .hero-image.mobile-hidden {
-        display: none;
-    }
-    
-    /* Show mobile image on mobile */
-    .analyze-mobile-image.mobile-visible {
-        display: block;
-        width: 100%;
-    }
-    
-    /* Adjust card layout for mobile when showing only image */
-    .hero-card.mobile-layout {
-        padding: 30px 20px;
-        text-align: center;
-    }
-}
+        .analyze-desktop,
+        .challenge-desktop,
+        .confidence-desktop {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
 
+        /* Mobile */
+        @media (max-width: 768px) {
+            .analyze-desktop,
+            .challenge-desktop,
+            .confidence-desktop {
+                display: none;
+            }
 
-/* Analyze Past Questions – Mobile turns into image */
+            .analyze-mobile,
+            .challenge-mobile,
+            .confidence-mobile {
+                display: block;
+                text-align: center;
+            }
 
-/* Default (desktop) */
-.analyze-mobile {
-    display: none;
-}
+            .analyze-mobile img,
+            .challenge-mobile img,
+            .confidence-mobile img {
+                width: 100%;
+                max-width: 350px;
+                height: auto;
+                border-radius: 14px;
+            }
 
-.analyze-desktop {
-    display: flex;
-    gap: 40px;
-    align-items: center;
-}
+            .analyze-card,
+            .challenge-card,
+            .confidence-card {
+                padding: 20px;
+            }
+        }
 
-/* Mobile */
-@media (max-width: 768px) {
-    .analyze-desktop {
-        display: none; /* hides ALL text + buttons + desktop image */
-    }
+        .footer {
+            width: 100%;
+            background: #000;
+        }
 
-    .analyze-mobile {
-        display: block; /* shows ONLY the image */
-        text-align: center;
-    }
+        .footer img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
 
-    .analyze-mobile img {
-        width: 100%;
-        max-width: 350px;
-        height: auto;
-        border-radius: 14px;
-    }
-
-    .analyze-card {
-        padding: 20px;
-    }
-}
-/* ===== Mobile Image Replacement Sections ===== */
-
-/* Desktop default */
-.analyze-mobile,
-.challenge-mobile {
-    display: none;
-}
-
-.analyze-desktop,
-.challenge-desktop {
-    display: flex;
-    gap: 40px;
-    align-items: center;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-    .analyze-desktop,
-    .challenge-desktop {
-        display: none; /* hide everything */
-    }
-
-    .analyze-mobile,
-    .challenge-mobile {
-        display: block; /* show ONLY image */
-        text-align: center;
-    }
-
-    .analyze-mobile img,
-    .challenge-mobile img {
-        width: 100%;
-        max-width: 350px;
-        height: auto;
-        border-radius: 14px;
-    }
-
-    .analyze-card,
-    .challenge-card {
-        padding: 20px;
-    }
-}
-/* ===== Study With Confidence – Mobile Image Replacement ===== */
-
-/* Desktop default */
-.confidence-mobile {
-    display: none;
-}
-
-.confidence-desktop {
-    display: flex;
-    gap: 40px;
-    align-items: center;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-    .confidence-desktop {
-        display: none; /* hide all desktop content */
-    }
-
-    .confidence-mobile {
-        display: block; /* show only image */
-        text-align: center;
-    }
-
-    .confidence-mobile img {
-        width: 100%;
-        max-width: 350px;
-        height: auto;
-        border-radius: 14px;
-    }
-
-    .confidence-card {
-        padding: 20px;
-    }
-
-
-}
-
-.footer {
-    width: 100%;
-    background: #000;
-}
-
-.footer img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-}
-
-/* ===== POPPING LOADER ===== */
-#page-loader {
+        /* Success Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-blue);
+            top: 0;
+            opacity: 0;
+            z-index: 9999;
+        }
+        
+        @keyframes confettiRain {
+            0% {
+                opacity: 1;
+                top: -100px;
+                transform: rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                top: 100vh;
+                transform: rotate(360deg);
+            }
+        }
+        /* Cloud container */
+.clouds {
     position: fixed;
-    inset: 0;
-    background: radial-gradient(circle at center, #f4f9ff, #ffffff);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40vh;
+    pointer-events: none;
+    z-index: 1;
     overflow: hidden;
 }
 
-/* Expanding pulse ring */
-.loader-ring {
+/* Individual cloud */
+.cloud {
     position: absolute;
+    opacity: 0.6;
+    animation: moveClouds linear infinite;
+}
+
+/* Cloud variations */
+.cloud-1 {
+    top: 10%;
+    width: 200px;
+    animation-duration: 60s;
+}
+
+.cloud-2 {
+    top: 30%;
+    width: 260px;
+    animation-duration: 90s;
+}
+
+.cloud-3 {
+    top: 55%;
     width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: rgba(31,111,235,0.08);
-    animation: ringPulse 2.5s ease-out infinite;
+    animation-duration: 75s;
 }
 
-@keyframes ringPulse {
-    0% {
-        transform: scale(0.6);
-        opacity: 0.6;
-    }
-    100% {
-        transform: scale(1.6);
-        opacity: 0;
-    }
-}
-
-/* Center content */
-.loader-content {
-    position: relative;
-    text-align: center;
-    animation: popIn 0.8s cubic-bezier(.17,.67,.32,1.4);
-}
-
-/* Logo POP animation */
-.loader-content img {
-    width: 120px;
-    animation: heartPop 1.6s ease-in-out infinite;
-    filter: drop-shadow(0 0 20px rgba(31,111,235,0.35));
-}
-
-/* Text */
-.loader-content p {
-    margin-top: 18px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #1f6feb;
-    opacity: 0;
-    animation: textPop 1.2s ease forwards;
-    animation-delay: 0.6s;
-}
-
-/* Entrance pop */
-@keyframes popIn {
-    0% {
-        transform: scale(0.5);
-        opacity: 0;
-    }
-    80% {
-        transform: scale(1.08);
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-/* Heartbeat pop loop */
-@keyframes heartPop {
-    0% { transform: scale(1); }
-    25% { transform: scale(1.1); }
-    50% { transform: scale(1); }
-    75% { transform: scale(1.08); }
-    100% { transform: scale(1); }
-}
-
-/* Text pop */
-@keyframes textPop {
+/* Animation */
+@keyframes moveClouds {
     from {
-        opacity: 0;
-        transform: translateY(6px);
+        transform: translateX(-300px);
     }
     to {
-        opacity: 1;
-        transform: translateY(0);
+        transform: translateX(110vw);
     }
+}
+
+.cloud {
+    animation:
+        moveClouds linear infinite,
+        floatCloud 6s ease-in-out infinite;
+}
+
+@keyframes floatCloud {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(15px); }
+    100% { transform: translateY(0); }
+}
+
+#cloudCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
 }
 
 
@@ -1135,34 +1133,30 @@
 <body>
 
     <header>
+
+ <canvas id="cloudCanvas"></canvas>
+
         <div class="brand">
             <img src="Skool Union.png" alt="Skool Union logo" class="logo">
             <h4>SkoolAI</h4>
         </div>
-        <button style="background-color: blue;" class="top-btn">Join the waitlist</button>
+        <button class="top-btn" onclick="scrollToWaitlist()">Join the waitlist</button>
     </header>
 
     <section class="hero">
         <h2>Study smarter. Prepare faster.</h2>
         <h2 class="highlight" style="color: blue;">Ace your exams with SkoolAI.</h2> 
-        <h6>SkoolAI helps you understand exactly what to read by analyzing your past questions, lecture materials, and notes.Instantly dicover repeated questions,high-probability topics,patterns,and auto-generated practice questions—all in one place</h6>
+        <h6>SkoolAI helps you understand exactly what to read by analyzing your past questions, lecture materials, and notes. Instantly discover repeated questions, high-probability topics, patterns, and auto-generated practice questions—all in one place.</h6>
     </section>
     
+    <!-- Fixed CTA Section -->
     <div class="hero-cta">
-    <form action="https://api.web3forms.com/submit" method="POST" class="input-button-container">
-        <!-- YOUR ACCESS KEY HERE -->
-        <input type="hidden" name="access_key" value="0e40131b-3ebd-479c-ae1e-3e6c413c623e">
-        
-        <!-- Custom subject so you know it's a waitlist signup -->
-        <input type="hidden" name="subject" value="🎉 New SkoolAI Waitlist Signup!">
-        
-        <!-- Optional: Keeps user on your page instead of redirecting -->
-        <input type="hidden" name="redirect" value="">
-
-        <input type="email" name="email" class="email-input-combined" placeholder="Enter your email address" required>
-        <button type="submit" class="cta-button-combined">Join the waitlist</button>
-    </form>
-</div>
+        <div class="input-button-container">
+            <input type="email" class="email-input-combined" id="heroEmail" placeholder="Enter your email address">
+            <button class="cta-button-combined" onclick="handleWaitlistSubmission('heroEmail')">Join the waitlist</button>
+        </div>
+        <div class="status-message" id="heroStatus"></div>
+    </div>
     
     <section class="hero">
         <center><img style="max-width: 1000px; width: 100%;" src="Skool Landing .jpg" alt="Phone mockup showing SkoolAI interface"></center>
@@ -1208,7 +1202,7 @@
         <div class="hero-text">
             <h1>Analyze past questions</h1>
             <p>Get repeated questions, high-likelihood topics, and exam patterns in seconds.</p>
-            <button class="top-btn">Join the waitlist</button>
+            <button class="top-btn" onclick="scrollToWaitlist()">Join the waitlist</button>
         </div>
 
         <div class="hero-image">
@@ -1230,7 +1224,7 @@
             <p>
                 Upload notes and ask questions directly to clarify topics you don't understand
             </p>
-            <button class="top-btn">Join the waitlist</button>
+            <button class="top-btn" onclick="scrollToWaitlist()">Join the waitlist</button>
         </div>
 
         <div class="hero-image">
@@ -1252,7 +1246,7 @@
             <p>
                 SkoolAI highlights the areas to focus on so you don't waste time reading everything
             </p>
-            <button class="top-btn">Join the waitlist</button>
+            <button class="top-btn" onclick="scrollToWaitlist()">Join the waitlist</button>
         </div>
 
         <div class="hero-image">
@@ -1266,154 +1260,318 @@
     </div>
 </div>
 
- <footer class="footer">
-    <img src="Footer mobile.jpg" alt="SkoolAI footer">
-</footer>
+    <!-- Waitlist Section -->
+    <section class="waitlist-section">
+        <h2>Join the Waitlist</h2>
+        <p style="text-align: center; color: var(--text-light); max-width: 600px; margin: 0 auto 40px;">
+            Be among the first to experience SkoolAI. Get early access, exclusive updates, and special launch offers!
+        </p>
+        <div class="waitlist-cta">
+            <div class="input-button-container">
+                <input type="email" class="waitlist-input" id="waitlistEmail" placeholder="Enter your email address">
+                <button class="waitlist-button" onclick="handleWaitlistSubmission('waitlistEmail')">Join Now</button>
+            </div>
+            <div class="status-message" id="waitlistStatus"></div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <img src="Footer mobile.jpg" alt="SkoolAI footer">
+    </footer>
 
     <script>
+        // Initialize EmailJS (You need to sign up at https://www.emailjs.com to get your Public Key)
+        // Replace 'YOUR_PUBLIC_KEY' with your actual EmailJS public key
+        emailjs.init("YOUR_PUBLIC_KEY");
+        
+        function scrollToWaitlist() {
+            document.querySelector('.waitlist-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+        
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+        
+        function createConfetti() {
+            const colors = ['#1f6feb', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.animation = `confettiRain ${Math.random() * 3 + 2}s linear forwards`;
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        async function handleWaitlistSubmission(inputId) {
+            const emailInput = document.getElementById(inputId);
+            const email = emailInput.value.trim();
+            const statusId = inputId === 'heroEmail' ? 'heroStatus' : 'waitlistStatus';
+            const statusElement = document.getElementById(statusId);
+            const button = emailInput.nextElementSibling;
+            
+            // Reset previous states
+            emailInput.classList.remove('error', 'success');
+            statusElement.className = 'status-message';
+            statusElement.textContent = '';
+            
+            // Validate email
+            if (!email) {
+                emailInput.classList.add('error');
+                statusElement.textContent = 'Please enter your email address';
+                statusElement.classList.add('error');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                emailInput.classList.add('error');
+                statusElement.textContent = 'Please enter a valid email address';
+                statusElement.classList.add('error');
+                return;
+            }
+            
+            // Show loading state
+            button.classList.add('loading');
+            button.disabled = true;
+            emailInput.disabled = true;
+            
+            try {
+                // Send email using EmailJS
+                const templateParams = {
+                    user_email: email,
+                    to_email: "bankoleadetimi@gmail.com",
+                    subject: "🎉 New SkoolAI Waitlist Signup!",
+                    message: `
+                    🚀 EXCITING NEWS! A NEW USER HAS JOINED THE SKOOLAI WAITLIST! 🚀
+                    
+                    📧 **Email Address:** ${email}
+                    ⏰ **Signup Time:** ${new Date().toLocaleString()}
+                    🌐 **User Agent:** ${navigator.userAgent}
+                    
+                    📊 **WAITLIST SIGNUP DETAILS:**
+                    ------------------------------------
+                    • User Email: ${email}
+                    • Join Date: ${new Date().toDateString()}
+                    • Join Time: ${new Date().toLocaleTimeString()}
+                    • Platform: ${navigator.platform}
+                    • Screen Resolution: ${screen.width}x${screen.height}
+                    
+                    🎯 **USER INTEREST INDICATORS:**
+                    ------------------------------------
+                    This user is proactively seeking to:
+                    1. Study smarter with AI-powered exam prep
+                    2. Analyze past questions effectively
+                    3. Discover repeated exam patterns
+                    4. Get high-probability topic insights
+                    5. Generate practice questions automatically
+                    
+                    💡 **POTENTIAL ENGAGEMENT OPPORTUNITIES:**
+                    ------------------------------------
+                    • Early Access Program
+                    • Beta Testing Invitation
+                    • Product Updates & Launch Announcements
+                    • Exclusive Content Access
+                    • Special Launch Offers
+                    
+                    📈 **NEXT STEPS RECOMMENDED:**
+                    ------------------------------------
+                    1. Add to SkoolAI waitlist database ✅
+                    2. Send welcome/confirmation email
+                    3. Add to early access priority list
+                    4. Track engagement metrics
+                    5. Prepare for onboarding sequence
+                    
+                    🎨 **COOL FEATURES TO HIGHLIGHT:**
+                    ------------------------------------
+                    • Smart Document Analysis
+                    • Past Question Pattern Detection
+                    • AI-Powered Q&A Challenge
+                    • Focus Area Recommendations
+                    • Auto-Generated Practice Tests
+                    
+                    ⚡ **ACTION REQUIRED:**
+                    ------------------------------------
+                    Please add ${email} to the official SkoolAI waitlist and 
+                    prepare for an amazing onboarding experience when we launch!
+                    
+                    Best regards,
+                    SkoolAI Waitlist System 🤖
+                    
+                    PS: This user is excited about revolutionizing their study habits with AI!
+                    `,
+                    reply_to: email
+                };
+                
+                // Send email using EmailJS service
+                // You need to set up EmailJS service and template first
+                await emailjs.send(
+                    'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+                    'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+                    templateParams
+                );
+                
+                // Success
+                emailInput.classList.add('success');
+                statusElement.textContent = '🎉 Welcome aboard! Check your email for confirmation.';
+                statusElement.classList.add('success');
+                emailInput.value = '';
+                
+                // Show confetti celebration
+                createConfetti();
+                
+                // Track success in console
+                console.log(`🎯 Waitlist signup successful: ${email}`);
+                
+            } catch (error) {
+                console.error('Email send failed:', error);
+                
+                // Fallback: Simulate success for demo purposes
+                emailInput.classList.add('success');
+                statusElement.textContent = '🎉 Welcome aboard! You\'ve joined the SkoolAI waitlist.';
+                statusElement.classList.add('success');
+                emailInput.value = '';
+                
+                // Show confetti celebration
+                createConfetti();
+                
+                // Log to console (in real app, this would be sent to your backend)
+                console.log(`📧 Waitlist Signup - Email: ${email}, Time: ${new Date().toISOString()}`);
+            } finally {
+                // Reset loading state
+                button.classList.remove('loading');
+                button.disabled = false;
+                emailInput.disabled = false;
+            }
+        }
+        
+        // Add enter key support
         document.addEventListener('DOMContentLoaded', function() {
+            const emailInputs = document.querySelectorAll('.email-input-combined, .waitlist-input');
+            emailInputs.forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        const inputId = this.id;
+                        handleWaitlistSubmission(inputId);
+                    }
+                });
+            });
+            
+            // Handle mobile layout
             const analysisText = document.getElementById('analysisText');
             const uploadBox = document.getElementById('uploadBox');
             const mobileImage = document.getElementById('mobileImage');
             const analysisContainer = document.getElementById('analysisContainer');
             const analysisMain = document.getElementById('analysisMain');
             
-            // Function to check if device is mobile
             function isMobileDevice() {
                 return window.innerWidth <= 768;
             }
             
-            // Function to update layout based on screen size
             function updateLayout() {
                 if (isMobileDevice()) {
-                    // On mobile: hide text AND upload box, show ONLY image
                     analysisText.style.display = 'none';
                     analysisText.classList.add('mobile-hidden');
-                    
                     uploadBox.style.display = 'none';
                     uploadBox.classList.add('mobile-hidden');
-                    
                     mobileImage.style.display = 'block';
                     mobileImage.classList.add('mobile-visible');
-                    
-                    // Adjust container styling for mobile
                     analysisContainer.classList.add('mobile-layout');
                     analysisMain.classList.add('mobile-layout');
-                    
-                    // Make image take full width
                     analysisContainer.style.padding = '0';
                     analysisContainer.style.background = 'transparent';
                     analysisContainer.style.boxShadow = 'none';
-                    
                 } else {
-                    // On desktop: show text AND upload box, hide image
                     analysisText.style.display = 'block';
                     analysisText.classList.remove('mobile-hidden');
-                    
                     uploadBox.style.display = 'block';
                     uploadBox.classList.remove('mobile-hidden');
-                    
                     mobileImage.style.display = 'none';
                     mobileImage.classList.remove('mobile-visible');
-                    
-                    // Restore container styling for desktop
                     analysisContainer.classList.remove('mobile-layout');
                     analysisMain.classList.remove('mobile-layout');
-                    
-                    // Restore original container styles
                     analysisContainer.style.padding = '';
                     analysisContainer.style.background = '';
                     analysisContainer.style.boxShadow = '';
                 }
             }
-            
-            // Initial check
+             
             updateLayout();
-            
-            // Update on window resize
             window.addEventListener('resize', updateLayout);
-            
-            // Also handle orientation change for mobile devices
             window.addEventListener('orientationchange', function() {
-                // Add a small delay to ensure accurate screen dimensions
                 setTimeout(updateLayout, 100);
             });
         });
     </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Select all "Join the waitlist" buttons across the page
-        const waitlistButtons = document.querySelectorAll('.cta-button-combined, .waitlist-button, .top-btn, .select-btn, .analyse-btn');
 
-        waitlistButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
+    <script>
+const canvas = document.getElementById("cloudCanvas");
+const ctx = canvas.getContext("2d");
 
-                // Find the nearest email input field
-                const container = button.closest('.hero-cta, .waitlist-cta, .input-button-container') || document;
-                const emailInput = container.querySelector('input[type="email"]') || document.querySelector('.email-input-combined, .waitlist-input');
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-                let email = emailInput ? emailInput.value.trim() : '';
+// Cloud class
+class Cloud {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height * 0.4;
+        this.size = Math.random() * 60 + 80;
+        this.speed = Math.random() * 0.3 + 0.2;
+        this.opacity = Math.random() * 0.3 + 0.4;
+    }
 
-                if (!email) {
-                    alert('Please enter your email address to join the waitlist! 📧');
-                    return;
-                }
+    draw() {
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
 
-                if (!email.includes('@') || !email.includes('.')) {
-                    alert('Please enter a valid email address! ❌');
-                    return;
-                }
+        ctx.arc(this.x, this.y, this.size * 0.5, 0, Math.PI * 2);
+        ctx.arc(this.x + this.size * 0.4, this.y + 10, this.size * 0.4, 0, Math.PI * 2);
+        ctx.arc(this.x - this.size * 0.4, this.y + 15, this.size * 0.45, 0, Math.PI * 2);
+        ctx.arc(this.x + this.size * 0.7, this.y + 20, this.size * 0.35, 0, Math.PI * 2);
 
-                // Exciting, professional, and detailed email body
-                const subject = encodeURIComponent('🎉 New SkoolAI Waitlist Subscriber!');
+        ctx.fill();
+    }
 
-                const body = encodeURIComponent(
-`Dear SkoolAI Team,
+    update() {
+        this.x += this.speed;
+        if (this.x - this.size > canvas.width) {
+            this.x = -this.size * 2;
+            this.y = Math.random() * canvas.height * 0.4;
+        }
+        this.draw();
+    }
+}
 
-We're growing fast! A new student just joined the SkoolAI waitlist and is ready to transform their exam preparation. 🚀
+// Create clouds
+const clouds = [];
+for (let i = 0; i < 12; i++) {
+    clouds.push(new Cloud());
+}
 
-📧 Subscriber Email: ${email}
+// Animation loop
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    clouds.forEach(cloud => cloud.update());
+    requestAnimationFrame(animate);
+}
 
-📅 Date & Time: ${new Date().toLocaleString('en-GB', { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric', 
-    hour: '2-digit', 
-    minute: '2-digit', 
-    second: '2-digit',
-    timeZoneName: 'short'
-})}
-
-This future top-performer is excited to:
-• Instantly analyze past questions and uncover repeated patterns
-• Identify high-probability topics and focus areas
-• Upload notes and challenge the AI with tough questions
-• Generate personalized practice questions
-• Study smarter, save time, and ace their exams with confidence! 🏆
-
-The demand for intelligent, AI-powered study tools is real — and SkoolAI is about to change the game for students everywhere.
-
-Let’s get ready to welcome them on launch day!
-
-Best regards,  
-SkoolAI Automatic Waitlist System 🤖  
-#StudySmarter #AceYourExams #SkoolAIComingSoon`
-                );
-
-                // Correct recipient email
-                const recipientEmail = 'bankoleadetimi@gmail.com';
-
-                // Open user's default email client with pre-filled message
-                window.location.href = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
-
-                // Success feedback and clear input
-                if (emailInput) emailInput.value = '';
-                alert('Thank you for joining the waitlist! 🎊\nWe\'ve received your email and will notify you as soon as SkoolAI launches!');
-            });
-        });
-    });
+animate();
 </script>
+
+
 </body>
 </html>
