@@ -598,6 +598,20 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
+        .analysis-mobile-image {
+            display: none;
+            width: 100%;
+            text-align: center;
+        }
+
+        .analysis-mobile-image img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 20px;
+            object-fit: contain;
+        }
+
         .upload-header {
             text-align: center;
             font-size: 1.1rem;
@@ -770,6 +784,13 @@
             .analysis-mobile-image.mobile-visible {
                 display: block;
                 width: 100%;
+                max-width: 100%;
+            }
+            
+            .analysis-mobile-image.mobile-visible img {
+                width: 100%;
+                max-width: 100%;
+                height: auto;
             }
             
             .analyze-mobile-image.mobile-visible {
@@ -1116,15 +1137,22 @@
     50% { transform: translateY(15px); }
     100% { transform: translateY(0); }
 }
+.hero,
+header {
+    position: relative;
+    z-index: 2;
+}
+
 
 #cloudCanvas {
     position: fixed;
-    top: 0;
+    top: -50px;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 120px;
     z-index: 0;
     pointer-events: none;
+    opacity: 0.5;
 }
 
 
@@ -1143,6 +1171,7 @@
         <button class="top-btn" onclick="scrollToWaitlist()">Join the waitlist</button>
     </header>
 
+    <canvas id="cloudCanvas"></canvas>
     <section class="hero">
         <h2>Study smarter. Prepare faster.</h2>
         <h2 class="highlight" style="color: blue;">Ace your exams with SkoolAI.</h2> 
@@ -1519,7 +1548,7 @@ const ctx = canvas.getContext("2d");
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.height = 120;
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
@@ -1528,29 +1557,43 @@ window.addEventListener("resize", resizeCanvas);
 class Cloud {
     constructor() {
         this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height * 0.4;
-        this.size = Math.random() * 60 + 80;
-        this.speed = Math.random() * 0.3 + 0.2;
-        this.opacity = Math.random() * 0.3 + 0.4;
+        this.y = Math.random() * 60 + 20;
+        this.size = Math.random() * 40 + 50;
+        this.speed = Math.random() * 0.15 + 0.05;
+        this.opacity = Math.random() * 0.25 + 0.15;
+        this.offsetY = Math.random() * 20;
+        this.time = Math.random() * 100;
     }
 
     draw() {
         ctx.beginPath();
         ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
+        ctx.shadowColor = 'rgba(255,255,255,0.3)';
+        ctx.shadowBlur = 15;
 
+        // Soft, puffy cloud shape with rounded edges
         ctx.arc(this.x, this.y, this.size * 0.5, 0, Math.PI * 2);
-        ctx.arc(this.x + this.size * 0.4, this.y + 10, this.size * 0.4, 0, Math.PI * 2);
-        ctx.arc(this.x - this.size * 0.4, this.y + 15, this.size * 0.45, 0, Math.PI * 2);
-        ctx.arc(this.x + this.size * 0.7, this.y + 20, this.size * 0.35, 0, Math.PI * 2);
+        ctx.arc(this.x + this.size * 0.35, this.y + 8, this.size * 0.38, 0, Math.PI * 2);
+        ctx.arc(this.x - this.size * 0.35, this.y + 8, this.size * 0.38, 0, Math.PI * 2);
+        ctx.arc(this.x + this.size * 0.6, this.y + 12, this.size * 0.3, 0, Math.PI * 2);
+        ctx.arc(this.x - this.size * 0.6, this.y + 12, this.size * 0.3, 0, Math.PI * 2);
 
         ctx.fill();
+        ctx.shadowBlur = 0;
     }
 
     update() {
         this.x += this.speed;
+        this.time += 0.01;
+        
+        // Gentle floating motion
+        const bobY = Math.sin(this.time) * 3;
+        
         if (this.x - this.size > canvas.width) {
             this.x = -this.size * 2;
-            this.y = Math.random() * canvas.height * 0.4;
+            this.y = Math.random() * 60 + 20;
+            this.offsetY = Math.random() * 20;
+            this.time = 0;
         }
         this.draw();
     }
@@ -1558,7 +1601,7 @@ class Cloud {
 
 // Create clouds
 const clouds = [];
-for (let i = 0; i < 12; i++) {
+for (let i = 0; i < 6; i++) {
     clouds.push(new Cloud());
 }
 
